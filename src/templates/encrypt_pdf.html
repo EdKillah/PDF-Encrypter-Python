@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/pdf.png') }}" />
+    <link rel="stylesheet" href="https://bootswatch.com/4/flatly/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css')  }}">
+    <title>PDF Encrypter</title>
+</head>
+
+<body>
+    <h1>Encrypt your PDF</h1>
+    <div class="cardx row d-flex justify-content-between">
+
+        <form action="/" id="pdf-form" method="POST" enctype="multipart/form-data" class="col-md-6">
+            <div class="form-group">
+                <label>Select PDF</label>
+                <div class="custom-file">
+                    <!--class="custom-file"-->
+                    <input class="fileContainer" oninput="sizeOfFile(this)" type="file" name="pdf" id="pdf">
+                    <!--<label class="custom-file-label" for="pdf"></label>-->
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Set your password: </label>
+                <input type="password" placeholder="********" id="password" name="password">
+            </div>
+            <div class="form-group">
+                <label>Repeat your password: </label>
+                <input type="password" placeholder="********" id="password_confirmation">
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary">Upload</button>
+            </div>
+        </form>
+
+
+        <div class="col-md-5" id="img_div">
+            <img id="pdf_secure" src="{{ url_for('static', filename='img/pdf_secure.png') }}" style="margin-top:0%; " alt="...">
+        </div>
+    </div>
+
+
+    <footer style="text-align: center;">
+        Created by <a href="https://github.com/EdKillah" style="color: white;">EdKillah</a> | Flask Python 3.8, 2021.
+    </footer>
+
+
+    {% block content %} {% block script %}
+    <script>
+        console.log("Entrando en script");
+
+        document.getElementById('pdf-form').addEventListener('submit', function(e) {
+
+            pwd = document.getElementById('password');
+            pwd_confirmation = document.getElementById('password_confirmation');
+            if (pwd.value == pwd_confirmation.value) {
+                console.log("Son iguales las contraseñas!");
+                //alert("Pdf was uploaded successfully!");
+            } else {
+                console.log("Las contraseñas no son iguales");
+                e.preventDefault();
+                pwd.value = '';
+                pwd_confirmation.value = '';
+                alert("Passwords are not equals!");
+            }
+
+
+
+        });
+
+
+
+        function sizeOfFile(e) {
+            console.log("e: ", e.files[0].size);
+
+            document.cookie = `filesize=${e.files[0].size}`;
+        }
+    </script>
+    {% endblock script %} {% endblock %}
+
+</body>
+
+
+</html>
